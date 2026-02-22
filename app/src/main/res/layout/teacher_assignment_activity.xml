@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F7FA">
+
+    <!-- HEADER -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#1565C0"
+        android:padding="14dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ccplogo"
+            android:contentDescription="App Logo"
+            android:layout_marginEnd="12dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Campus Connect Portal"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- CONTENT -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Page Title -->
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create Assignment"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#263238"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Assignment Title -->
+            <EditText
+                android:id="@+id/etAssignmentTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Assignment Title"
+                android:background="@drawable/edittext_rounded"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- Assignment Description -->
+            <EditText
+                android:id="@+id/etAssignmentDesc"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:hint="Assignment Description"
+                android:gravity="top"
+                android:inputType="textMultiLine"
+                android:background="@drawable/edittext_rounded"
+                android:layout_marginBottom="12dp"/>
+
+            <Spinner
+                android:id="@+id/spinnerYear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_rounded"
+                android:layout_marginBottom="16dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAttachFile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Attach PDF / Image"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:backgroundTint="#1976D2"
+                app:cornerRadius="14dp"
+                app:rippleColor="#BBDEFB"
+                android:layout_marginBottom="8dp"/>
+
+
+            <TextView
+                android:id="@+id/tvSelectedFile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No file selected"
+                android:textSize="14sp"
+                android:textColor="#546E7A"
+                android:layout_marginBottom="20dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPostAssignment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Post Assignment"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:backgroundTint="#1E88E5"
+                app:cornerRadius="14dp"
+                app:rippleColor="#BBDEFB"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
