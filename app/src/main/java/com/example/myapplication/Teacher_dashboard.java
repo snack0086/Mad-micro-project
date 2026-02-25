@@ -5,12 +5,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
 
-public class Teacher_dashboard extends AppCompatActivity {
+public class Teacher_dashboard extends BaseActivity {
 
     // UI Components
     private TextView teacherGreeting;
@@ -28,10 +28,12 @@ public class Teacher_dashboard extends AppCompatActivity {
     private ImageView notificationIcon;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_teacher_dashboard);
 
+        setContentView(R.layout.activity_teacher_dashboard);
+        userRole = "teacher";
+        setupDrawer(R.id.nav_dashboard);
         // Initialize views
         initializeViews();
 

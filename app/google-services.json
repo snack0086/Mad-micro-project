@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "973279404758",
-    "project_id": "campus-connect-2159b",
-    "storage_bucket": "campus-connect-2159b.firebasestorage.app"
+    "project_number": "517623584760",
+    "project_id": "mad-microproject-e2f06",
+    "storage_bucket": "mad-microproject-e2f06.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:973279404758:android:d844e307812e8a7b0b9f77",
+        "mobilesdk_app_id": "1:517623584760:android:8fe1f62643308417afa80d",
         "android_client_info": {
           "package_name": "com.example.myapplication"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyARqH8x7EcIajenUJHRG085Au_fUa2e_Hg"
+          "current_key": "AIzaSyAhjjJMYWKZZrRYeGhBLhtl6cQ8awGynQA"
         }
       ],
       "services": {
