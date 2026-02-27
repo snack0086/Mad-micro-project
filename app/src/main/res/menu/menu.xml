@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_dashboard"
+            android:title="Dashboard" />
+
+        <item
+            android:id="@+id/nav_announcements"
+            android:title="Announcements" />
+
+        <item
+            android:id="@+id/nav_upload_material"
+            android:title="Upload Materials" />
+
+        <item
+            android:id="@+id/nav_manage_assignments"
+            android:title="Manage Assignments"
+            android:icon="@drawable/ic_assignment"/>
+    </group>
+
+    <item android:title=" " />
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_profile"
+            android:title="Profile" />
+
+        <item
+            android:id="@+id/nav_logout"
+            android:title="Logout"/>
+    </group>
+
+</menu>
