@@ -177,13 +177,34 @@
                     android:textStyle="bold"
                     app:cornerRadius="12dp" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center"
-                    android:text="Already a member? Log in"
-                    android:textColor="#44474E" />
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:id="@+id/txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="75dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_gravity="center"
+                        android:text="Already registered? "
+                        android:textColor="#1A237E" />
+
+                    <TextView
+                        android:id="@+id/txtLogin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:layout_gravity="center"
+                        android:text="Log in"
+                        android:textColor="#44474E"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:textStyle="bold"/>
+                </LinearLayout>
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>

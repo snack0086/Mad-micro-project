@@ -1,9 +1,10 @@
 package com.example.myapplication;
 
+import com.google.firebase.auth.FirebaseAuth;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.*;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -15,23 +16,24 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 
 public class StudentSignUpActivity extends AppCompatActivity {
-
+    FirebaseAuth mAuth;
     EditText name, id, email, password;
     Button signup;
     DatabaseReference studentRef;
+    TextView txtLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_signup);
-
+        mAuth = FirebaseAuth.getInstance();
         // Initialize views
         name = findViewById(R.id.etStudentName);
         id = findViewById(R.id.etStudentId);
         email = findViewById(R.id.etStudentEmail);
         password = findViewById(R.id.etStudentPassword);
         signup = findViewById(R.id.btnStudentSignup);
-
+        txtLogin=findViewById(R.id.txtLogin);
         // Firebase reference
         studentRef = FirebaseDatabase.getInstance()
                 .getReference("CampusConnect")
@@ -78,36 +80,49 @@ public class StudentSignUpActivity extends AppCompatActivity {
                     return;
                 }
 
-                // Create a map to store student data
-                HashMap<String, Object> studentMap = new HashMap<>();
-                studentMap.put("name", sName);
-                studentMap.put("studentId", sId);
-                studentMap.put("email", sEmail);
-                studentMap.put("password", sPass);
-                studentMap.put("attendance", "0%"); // Optional: initialize attendance
 
                 // Save data to Firebase
-                studentRef.child(sId).setValue(studentMap)
-                        .addOnSuccessListener(unused -> {
-                            Toast.makeText(StudentSignUpActivity.this,
-                                    "Student successfully registered", Toast.LENGTH_LONG).show();
+                mAuth.createUserWithEmailAndPassword(sEmail, sPass)
+                        .addOnCompleteListener(task -> {
 
-                            // Clear input fields
-                            name.setText("");
-                            id.setText("");
-                            email.setText("");
-                            password.setText("");
+                            if (task.isSuccessful()) {
 
-                            // Redirect to Student Dashboard
-                            Intent intent = new Intent(StudentSignUpActivity.this, StudentDashboardActivity.class);
-                            intent.putExtra("studentId", sId);
-                            startActivity(intent);
-                            finish();
+                                String userId = mAuth.getCurrentUser().getUid();
 
-                        })
-                        .addOnFailureListener(e -> Toast.makeText(StudentSignUpActivity.this,
-                                "Error: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                                HashMap<String, Object> studentMap = new HashMap<>();
+                                studentMap.put("name", sName);
+                                studentMap.put("studentId", sId);
+                                studentMap.put("email", sEmail);
+                                studentMap.put("attendance", "0%");
+                                studentMap.put("role", "student");
+
+                                studentRef.child(userId).setValue(studentMap)
+                                        .addOnSuccessListener(unused -> {
+
+                                            Toast.makeText(StudentSignUpActivity.this,
+                                                    "Student successfully registered",
+                                                    Toast.LENGTH_LONG).show();
+
+                                            Intent intent = new Intent(
+                                                    StudentSignUpActivity.this,
+                                                    StudentDashboardActivity.class);
+
+                                            intent.putExtra("studentId", sId);
+                                            startActivity(intent);
+                                            finish();
+                                        });
+
+                            } else {
+                                Toast.makeText(StudentSignUpActivity.this,
+                                        "Error: " + task.getException().getMessage(),
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        });
             }
+        });
+        txtLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(StudentSignUpActivity.this, Login.class);
+            startActivity(intent);
         });
     }
 }

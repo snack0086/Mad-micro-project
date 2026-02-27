@@ -10,18 +10,21 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import java.util.HashMap;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class TeacherAssignmentActivity extends AppCompatActivity {
+public class TeacherAssignmentActivity extends BaseActivity {
 
     TextView tvTitle, tvSelectedFile;
     EditText etAssignmentTitle, etAssignmentDesc;
-    Spinner spinnerYear;
     Button btnAttachFile, btnPostAssignment;
 
-    DBHelper dbHelper;
+
 
     private static final int PICK_FILE_REQUEST = 100;
 
@@ -32,18 +35,18 @@ public class TeacherAssignmentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.teacher_assignment_activity);
+        userRole = "teacher";
+        setupDrawer(R.id.nav_manage_assignments);
 
         // UI binding
         tvTitle = findViewById(R.id.tvTitle);
         tvSelectedFile = findViewById(R.id.tvSelectedFile);
         etAssignmentTitle = findViewById(R.id.etAssignmentTitle);
         etAssignmentDesc = findViewById(R.id.etAssignmentDesc);
-        spinnerYear = findViewById(R.id.spinnerYear);
         btnAttachFile = findViewById(R.id.btnAttachFile);
         btnPostAssignment = findViewById(R.id.btnPostAssignment);
 
-        // DB init
-        dbHelper = new DBHelper(this);
+
 
         // Spinner setup
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -52,7 +55,6 @@ public class TeacherAssignmentActivity extends AppCompatActivity {
                 android.R.layout.simple_spinner_item
         );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerYear.setAdapter(adapter);
 
         btnAttachFile.setOnClickListener(v -> openFilePicker());
         btnPostAssignment.setOnClickListener(v -> postAssignment());
@@ -97,7 +99,6 @@ public class TeacherAssignmentActivity extends AppCompatActivity {
 
         String title = etAssignmentTitle.getText().toString().trim();
         String description = etAssignmentDesc.getText().toString().trim();
-        String year = spinnerYear.getSelectedItem().toString();
 
         if (title.isEmpty()) {
             etAssignmentTitle.setError("Title required");
@@ -109,35 +110,39 @@ public class TeacherAssignmentActivity extends AppCompatActivity {
             return;
         }
 
-        String attachmentUriString = "";
-        if (selectedFileUri != null) {
-            attachmentUriString = selectedFileUri.toString();
-        } else {
-            attachmentType = "none";
-        }
+        String attachmentUriString = selectedFileUri != null
+                ? selectedFileUri.toString()
+                : "";
 
-        Log.d("DB_TEST", "Inserting assignment: " + title);
+        String teacherUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        boolean inserted = dbHelper.insertAssignment(
-                title,
-                description,
-                year,
-                attachmentType,
-                attachmentUriString
-        );
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference("CampusConnect")
+                .child("Assignments");
 
-        if (inserted) {
-            Toast.makeText(this, "Assignment posted successfully", Toast.LENGTH_SHORT).show();
-            clearFields();
-        } else {
-            Toast.makeText(this, "Failed to post assignment", Toast.LENGTH_SHORT).show();
-        }
+        String assignmentId = ref.push().getKey();
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("title", title);
+        map.put("description", description);
+        map.put("attachmentType", attachmentType);
+        map.put("attachmentUri", attachmentUriString);
+        map.put("teacherUid", teacherUid);
+        map.put("timestamp", System.currentTimeMillis());
+
+        ref.child(assignmentId).setValue(map)
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(this, "Assignment Posted", Toast.LENGTH_SHORT).show();
+                    clearFields();
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Error: " + e.getMessage(),
+                                Toast.LENGTH_LONG).show());
     }
 
     private void clearFields() {
         etAssignmentTitle.setText("");
         etAssignmentDesc.setText("");
-        spinnerYear.setSelection(0);
         tvSelectedFile.setText("No file selected");
         selectedFileUri = null;
         attachmentType = "none";
