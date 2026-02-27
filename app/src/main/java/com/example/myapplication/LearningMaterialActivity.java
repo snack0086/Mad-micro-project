@@ -39,7 +39,6 @@ public class LearningMaterialActivity extends AppCompatActivity {
 
         // Link UI elements
         etMaterialTitle = findViewById(R.id.etMaterialTitle);
-        spinnerYear = findViewById(R.id.spinnerYear);
         btnAttach = findViewById(R.id.btnAttach);
         btnUpload = findViewById(R.id.btnUpload);
         layoutUpload = findViewById(R.id.layoutUpload);
