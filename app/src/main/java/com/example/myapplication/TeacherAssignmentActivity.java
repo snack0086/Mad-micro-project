@@ -24,8 +24,6 @@ public class TeacherAssignmentActivity extends BaseActivity {
     EditText etAssignmentTitle, etAssignmentDesc;
     Button btnAttachFile, btnPostAssignment;
 
-
-
     private static final int PICK_FILE_REQUEST = 100;
 
     Uri selectedFileUri;
