@@ -4,7 +4,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +23,6 @@ import java.util.HashMap;
 public class LearningMaterialActivity extends BaseActivity {
 
     EditText etMaterialTitle;
-    Spinner spinnerYear;
     Button btnAttach, btnUpload;
     LinearLayout layoutUpload;
     RecyclerView rvMaterials;
@@ -46,8 +49,6 @@ public class LearningMaterialActivity extends BaseActivity {
         rvMaterials = findViewById(R.id.rvMaterials);
         tvSelectedFile = findViewById(R.id.tvSelectedFile);
 
-        // Spinner Setup
-
         // Hide upload section if student
         if ("student".equals(userRole)) {
             layoutUpload.setVisibility(View.GONE);
@@ -71,15 +72,9 @@ public class LearningMaterialActivity extends BaseActivity {
     private void uploadMaterial() {
 
         String title = etMaterialTitle.getText().toString().trim();
-        String year = spinnerYear.getSelectedItem().toString();
 
         if (title.isEmpty()) {
             Toast.makeText(this, "Enter material title", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (year.equals("Select Year")) {
-            Toast.makeText(this, "Select year", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -98,7 +93,6 @@ public class LearningMaterialActivity extends BaseActivity {
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("title", title);
-        map.put("year", year);
         map.put("attachmentUri", selectedFileUri.toString());
         map.put("teacherUid", teacherUid);
         map.put("timestamp", System.currentTimeMillis());
@@ -115,7 +109,6 @@ public class LearningMaterialActivity extends BaseActivity {
 
     private void clearFields() {
         etMaterialTitle.setText("");
-        spinnerYear.setSelection(0);
         tvSelectedFile.setText("No file selected");
         selectedFileUri = null;
     }

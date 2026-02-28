@@ -1,204 +1,241 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class Teacher_dashboard extends BaseActivity {
 
-    // UI Components
     private TextView teacherGreeting;
-    private TextView teacherRole;
-    private MaterialButton btnPostAnnouncement;
-    private MaterialButton btnStartAttendance;
-    private TextView className;
-    private TextView classTime;
-    private TextView classRoom;
-    private TextView studentCount;
-    private TextView tvPapersCount;
-    private TextView tvMessagesCount;
-    private TextView tvAvgGrade;
-    private TextView tvViewSchedule;
-    private ImageView notificationIcon;
+    private TextView tvTotalAssignments, tvAnnouncementsCount;
+    private TextView tvMadCount, tvSftCount, tvEtiCount;
+    private LinearLayout layoutAssignmentsList, layoutAnnouncementsList;
+    private MaterialButton btnAddAssignment, btnGoToMaterials;
+    private ImageView btnLogout;
+
+    private DatabaseReference dbRef;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_teacher_dashboard);
+
         userRole = "teacher";
         setupDrawer(R.id.nav_dashboard);
-        // Initialize views
-        initializeViews();
 
-        // Set up click listeners
-        setupClickListeners();
+        teacherGreeting       = findViewById(R.id.teacherGreeting);
+        tvTotalAssignments    = findViewById(R.id.tvTotalAssignments);
+        tvAnnouncementsCount  = findViewById(R.id.tvAnnouncementsCount);
+        tvMadCount            = findViewById(R.id.tvMadCount);
+        tvSftCount            = findViewById(R.id.tvSftCount);
+        tvEtiCount            = findViewById(R.id.tvEtiCount);
+        layoutAssignmentsList   = findViewById(R.id.layoutAssignmentsList);
+        layoutAnnouncementsList = findViewById(R.id.layoutAnnouncementsList);
+        btnAddAssignment        = findViewById(R.id.btnAddAssignment);
+        btnGoToMaterials        = findViewById(R.id.btnGoToMaterials);
+        btnLogout               = findViewById(R.id.btnLogout);
 
-        // Load initial data
-        loadDashboardData();
-    }
+        dbRef = FirebaseDatabase.getInstance().getReference("CampusConnect");
 
-    private void initializeViews() {
-        // Header section
-        teacherGreeting = findViewById(R.id.teacherGreeting);
-        teacherRole = findViewById(R.id.teacherRole);
-        notificationIcon = findViewById(R.id.notificationIcon);
+        loadTeacherName();
+        loadAssignments();
+        loadAnnouncements();
 
-        // Buttons
-        btnPostAnnouncement = findViewById(R.id.btnPostAnnouncement);
-        btnStartAttendance = findViewById(R.id.btnStartAttendance);
+        btnAddAssignment.setOnClickListener(v ->
+                startActivity(new Intent(this, TeacherAssignmentActivity.class)));
 
-        // Class details
-        className = findViewById(R.id.className);
-        classTime = findViewById(R.id.classTime);
-        classRoom = findViewById(R.id.classRoom);
-        studentCount = findViewById(R.id.studentCount);
+        btnGoToMaterials.setOnClickListener(v ->
+                startActivity(new Intent(this, LearningMaterialActivity.class)));
 
-        // Quick stats
-        tvPapersCount = findViewById(R.id.tvPapersCount);
-        tvMessagesCount = findViewById(R.id.tvMessagesCount);
-        tvAvgGrade = findViewById(R.id.tvAvgGrade);
-
-        // Other elements
-        tvViewSchedule = findViewById(R.id.tvViewSchedule);
-    }
-
-    private void setupClickListeners() {
-        // Post Announcement button
-        btnPostAnnouncement.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handlePostAnnouncement();
-            }
-        });
-
-        // Start Attendance button
-        btnStartAttendance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleStartAttendance();
-            }
-        });
-
-        // View Schedule link
-        tvViewSchedule.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleViewSchedule();
-            }
-        });
-
-        // Notification icon
-        notificationIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleNotifications();
-            }
+        btnLogout.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            getSharedPreferences(Login.PREFS_NAME, MODE_PRIVATE).edit().clear().apply();
+            Intent intent = new Intent(this, Login.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
         });
     }
 
-    private void loadDashboardData() {
-        // In a real app, this would fetch data from a database or API
-        // Get user info from login intent
-        String userName = getIntent().getStringExtra("USER_NAME");
-        String userEmail = getIntent().getStringExtra("USER_EMAIL");
-        
-        // Set teacher greeting with user name
-        if (userName != null && !userName.isEmpty()) {
-            teacherGreeting.setText("Hello, " + userName);
+    private void loadTeacherName() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null && user.getDisplayName() != null && !user.getDisplayName().isEmpty()) {
+            teacherGreeting.setText("Welcome back, " + user.getDisplayName() + "!");
+        } else if (user != null && user.getEmail() != null) {
+            String name = user.getEmail().split("@")[0];
+            name = name.substring(0, 1).toUpperCase() + name.substring(1);
+            teacherGreeting.setText("Welcome back, " + name + "!");
         } else {
-            teacherGreeting.setText("Hello, Teacher");
-        }
-        
-        teacherRole.setText("Main Teacher");
-
-        // Up Next class
-        className.setText("Physics 101");
-        classTime.setText("10:00 AM - 11:30 AM");
-        classRoom.setText("Room 302");
-        studentCount.setText("45 Students");
-
-        // Quick stats
-        tvPapersCount.setText("45");
-        tvMessagesCount.setText("2");
-        tvAvgGrade.setText("98%");
-    }
-
-    private void handlePostAnnouncement() {
-        // Open announcement creation screen
-        Toast.makeText(this, "Opening Post Announcement", Toast.LENGTH_SHORT).show();
-        
-        // In a real app, you would start a new activity or show a dialog:
-        // Intent intent = new Intent(this, PostAnnouncementActivity.class);
-        // startActivity(intent);
-    }
-
-    private void handleStartAttendance() {
-        // Open attendance tracking screen
-        Toast.makeText(this, "Starting Attendance for Physics 101", Toast.LENGTH_SHORT).show();
-        
-        // In a real app, you would start the attendance activity:
-        // Intent intent = new Intent(this, AttendanceActivity.class);
-        // intent.putExtra("CLASS_NAME", "Physics 101");
-        // startActivity(intent);
-    }
-
-    private void handleViewSchedule() {
-        // Open full schedule view
-        Toast.makeText(this, "Opening Schedule", Toast.LENGTH_SHORT).show();
-        
-        // In a real app, you would start the schedule activity:
-        // Intent intent = new Intent(this, ScheduleActivity.class);
-        // startActivity(intent);
-    }
-
-    private void handleNotifications() {
-        // Open notifications screen
-        Toast.makeText(this, "Opening Notifications", Toast.LENGTH_SHORT).show();
-        
-        // In a real app, you would start the notifications activity:
-        // Intent intent = new Intent(this, NotificationsActivity.class);
-        // startActivity(intent);
-    }
-
-    // Helper method to format time
-    private String formatTime(int hour, int minute) {
-        String amPm = hour >= 12 ? "PM" : "AM";
-        int displayHour = hour > 12 ? hour - 12 : hour;
-        if (displayHour == 0) displayHour = 12;
-        return String.format("%d:%02d %s", displayHour, minute, amPm);
-    }
-
-    // Data model classes (in a real app, these would be in separate files)
-    public static class ClassInfo {
-        String name;
-        String time;
-        String room;
-        int studentCount;
-
-        public ClassInfo(String name, String time, String room, int studentCount) {
-            this.name = name;
-            this.time = time;
-            this.room = room;
-            this.studentCount = studentCount;
+            teacherGreeting.setText("Welcome back, Teacher!");
         }
     }
 
-    public static class DashboardStats {
-        int papersToGrade;
-        int newMessages;
-        double avgGrade;
+    private void loadAssignments() {
+        dbRef.child("Assignments").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                layoutAssignmentsList.removeAllViews();
 
-        public DashboardStats(int papersToGrade, int newMessages, double avgGrade) {
-            this.papersToGrade = papersToGrade;
-            this.newMessages = newMessages;
-            this.avgGrade = avgGrade;
-        }
+                int total = 0, mad = 0, sft = 0, eti = 0;
+
+                if (!snapshot.exists()) {
+                    addEmptyText(layoutAssignmentsList, "No assignments yet.");
+                    tvTotalAssignments.setText("0");
+                    tvMadCount.setText("0");
+                    tvSftCount.setText("0");
+                    tvEtiCount.setText("0");
+                    return;
+                }
+
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    total++;
+                    String title = child.child("title").getValue(String.class);
+                    String subject = child.child("subject").getValue(String.class);
+                    Long timestamp = child.child("timestamp").getValue(Long.class);
+
+                    if (subject == null) subject = "GEN";
+
+                    String subjectUpper = subject.toUpperCase();
+                    if (subjectUpper.contains("MAD")) mad++;
+                    else if (subjectUpper.contains("SFT")) sft++;
+                    else if (subjectUpper.contains("ETI")) eti++;
+
+                    String dateStr = "";
+                    if (timestamp != null) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                        dateStr = "Due: " + sdf.format(new Date(timestamp));
+                    }
+
+                    addAssignmentItem(title, subjectUpper, dateStr);
+                }
+
+                tvTotalAssignments.setText(String.valueOf(total));
+                tvMadCount.setText(String.valueOf(mad));
+                tvSftCount.setText(String.valueOf(sft));
+                tvEtiCount.setText(String.valueOf(eti));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Toast.makeText(Teacher_dashboard.this, "Failed to load assignments", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadAnnouncements() {
+        dbRef.child("Announcements").orderByChild("timestamp").limitToLast(5)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        layoutAnnouncementsList.removeAllViews();
+
+                        int count = 0;
+
+                        if (!snapshot.exists()) {
+                            addEmptyText(layoutAnnouncementsList, "No announcements yet.");
+                            tvAnnouncementsCount.setText("0");
+                            return;
+                        }
+
+                        for (DataSnapshot child : snapshot.getChildren()) {
+                            count++;
+                            String title   = child.child("title").getValue(String.class);
+                            String message = child.child("message").getValue(String.class);
+                            Long timestamp = child.child("timestamp").getValue(Long.class);
+
+                            String meta = "By Admin";
+                            if (timestamp != null) {
+                                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                                meta = "By Admin • " + sdf.format(new Date(timestamp));
+                            }
+
+                            addAnnouncementItem(title, message, meta);
+                        }
+
+                        tvAnnouncementsCount.setText(String.valueOf(count));
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        Toast.makeText(Teacher_dashboard.this, "Failed to load announcements", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void addAssignmentItem(String title, String subject, String dueDate) {
+        View item = LayoutInflater.from(this).inflate(R.layout.item_assignment_dash, layoutAssignmentsList, false);
+
+        TextView tvBadge = item.findViewById(R.id.tvSubjectBadge);
+        TextView tvTitle = item.findViewById(R.id.tvAssignmentTitle);
+        TextView tvDue   = item.findViewById(R.id.tvDueDate);
+
+        tvBadge.setText(subject.length() > 4 ? subject.substring(0, 4) : subject);
+        tvTitle.setText(title != null ? title : "Untitled");
+        tvDue.setText(dueDate);
+
+        layoutAssignmentsList.addView(item);
+    }
+
+    private void addAnnouncementItem(String title, String message, String meta) {
+        View item = LayoutInflater.from(this).inflate(R.layout.item_announcement_dash, layoutAnnouncementsList, false);
+
+        TextView tvTitle   = item.findViewById(R.id.tvAnnouncementTitle);
+        TextView tvMessage = item.findViewById(R.id.tvAnnouncementMessage);
+        TextView tvMeta    = item.findViewById(R.id.tvAnnouncementMeta);
+
+        tvTitle.setText(title != null ? title : "Untitled");
+        tvMessage.setText(message != null ? message : "");
+        tvMeta.setText(meta);
+
+        layoutAnnouncementsList.addView(item);
+    }
+
+    private void addEmptyText(LinearLayout parent, String text) {
+        LinearLayout container = new LinearLayout(this);
+        container.setOrientation(LinearLayout.VERTICAL);
+        container.setGravity(android.view.Gravity.CENTER);
+        int pad = (int) (16 * getResources().getDisplayMetrics().density);
+        container.setPadding(pad, pad, pad, pad);
+
+        ImageView icon = new ImageView(this);
+        icon.setImageResource(R.drawable.ic_assignment);
+        LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(
+                (int)(40 * getResources().getDisplayMetrics().density),
+                (int)(40 * getResources().getDisplayMetrics().density));
+        iconParams.gravity = android.view.Gravity.CENTER;
+        iconParams.bottomMargin = (int)(8 * getResources().getDisplayMetrics().density);
+        icon.setLayoutParams(iconParams);
+        icon.setColorFilter(0xFFCBD5E1);
+        container.addView(icon);
+
+        TextView tv = new TextView(this);
+        tv.setText(text);
+        tv.setTextColor(0xFF94A3B8);
+        tv.setTextSize(12f);
+        tv.setGravity(android.view.Gravity.CENTER);
+        container.addView(tv);
+
+        parent.addView(container);
     }
 }

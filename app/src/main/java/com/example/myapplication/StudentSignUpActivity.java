@@ -99,15 +99,18 @@ public class StudentSignUpActivity extends AppCompatActivity {
                                 studentRef.child(userId).setValue(studentMap)
                                         .addOnSuccessListener(unused -> {
 
+                                            // Sign out so user must login manually
+                                            FirebaseAuth.getInstance().signOut();
+
                                             Toast.makeText(StudentSignUpActivity.this,
-                                                    "Student successfully registered",
+                                                    "Registered successfully! Please login.",
                                                     Toast.LENGTH_LONG).show();
 
                                             Intent intent = new Intent(
                                                     StudentSignUpActivity.this,
-                                                    StudentDashboardActivity.class);
-
-                                            intent.putExtra("studentId", sId);
+                                                    Login.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(intent);
                                             finish();
                                         });

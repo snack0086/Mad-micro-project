@@ -97,15 +97,18 @@ public class TeacherSignUpActivity extends AppCompatActivity {
                             teacherRef.child(uid).setValue(teacherMap)
                                     .addOnSuccessListener(unused -> {
 
+                                        // Sign out so user must login manually
+                                        FirebaseAuth.getInstance().signOut();
+
                                         Toast.makeText(this,
-                                                "Teacher successfully registered",
+                                                "Registered successfully! Please login.",
                                                 Toast.LENGTH_LONG).show();
 
-                                        // Redirect to Teacher Dashboard
                                         Intent intent = new Intent(
                                                 TeacherSignUpActivity.this,
-                                                Teacher_dashboard.class);
-
+                                                Login.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                         finish();
                                     })

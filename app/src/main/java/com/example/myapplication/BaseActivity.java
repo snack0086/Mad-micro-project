@@ -1,8 +1,6 @@
 package com.example.myapplication;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -23,16 +21,25 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigationView);
-        toolbar = findViewById(R.id.toolbar);
 
-        setSupportActionBar(toolbar);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this,
-                drawerLayout,
-                toolbar,
-                R.string.open_drawer,
-                R.string.close_drawer);
+        ActionBarDrawerToggle toggle;
+
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            toggle = new ActionBarDrawerToggle(
+                    this,
+                    drawerLayout,
+                    toolbar,
+                    R.string.open_drawer,
+                    R.string.close_drawer);
+        } else {
+            toggle = new ActionBarDrawerToggle(
+                    this,
+                    drawerLayout,
+                    R.string.open_drawer,
+                    R.string.close_drawer);
+        }
 
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
@@ -42,7 +49,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(item -> {
 
             int id = item.getItemId();
-
+    
             if (id == R.id.nav_dashboard) {
 
                 if ("teacher".equals(userRole)) {
@@ -71,7 +78,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
             else if (id == R.id.nav_logout) {
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(this, Login.class));
+                getSharedPreferences(Login.PREFS_NAME, MODE_PRIVATE).edit().clear().apply();
+                Intent intent = new Intent(this, Login.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 finish();
             }
 
