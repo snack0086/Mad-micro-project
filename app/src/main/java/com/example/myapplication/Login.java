@@ -32,7 +32,7 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Auto-login: if already logged in, go directly to dashboard
+        // Auto-login
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         if (prefs.getBoolean(KEY_IS_LOGGED, false)) {
             String role = prefs.getString(KEY_ROLE, "");
@@ -47,8 +47,11 @@ public class Login extends AppCompatActivity {
         btnLogin    = findViewById(R.id.btnLogin);
         txtSignup   = findViewById(R.id.txtSignup);
 
-        mAuth   = FirebaseAuth.getInstance();
-        rootRef = FirebaseDatabase.getInstance().getReference("CampusConnect");
+        mAuth = FirebaseAuth.getInstance();
+
+        rootRef = FirebaseDatabase.getInstance()
+                .getReference("CampusConnect")
+                .child("Users");
 
         btnLogin.setOnClickListener(v -> {
 
@@ -67,40 +70,33 @@ public class Login extends AppCompatActivity {
 
                             String uid = mAuth.getCurrentUser().getUid();
 
-                            // Check if Student
-                            rootRef.child("Students").child(uid).get()
-                                    .addOnCompleteListener(studentTask -> {
+                            // Get user data
+                            rootRef.child(uid).get()
+                                    .addOnCompleteListener(userTask -> {
 
-                                        if (studentTask.isSuccessful()
-                                                && studentTask.getResult().exists()) {
+                                        if (userTask.isSuccessful()
+                                                && userTask.getResult().exists()) {
 
-                                            saveSession(uid, "student");
-                                            navigateToDashboard("student");
+                                            String role = userTask.getResult()
+                                                    .child("role")
+                                                    .getValue(String.class);
+
+                                            saveSession(uid, role);
+                                            navigateToDashboard(role);
 
                                         } else {
 
-                                            // Check if Teacher
-                                            rootRef.child("Teachers").child(uid).get()
-                                                    .addOnCompleteListener(teacherTask -> {
-
-                                                        if (teacherTask.isSuccessful()
-                                                                && teacherTask.getResult().exists()) {
-
-                                                            saveSession(uid, "teacher");
-                                                            navigateToDashboard("teacher");
-
-                                                        } else {
-                                                            Toast.makeText(this,
-                                                                    "User record not found. Contact admin.",
-                                                                    Toast.LENGTH_LONG).show();
-                                                        }
-                                                    });
+                                            Toast.makeText(this,
+                                                    "User record not found",
+                                                    Toast.LENGTH_LONG).show();
                                         }
                                     });
 
                         } else {
+
                             Toast.makeText(this,
-                                    "Login Failed: " + task.getException().getMessage(),
+                                    "Login Failed: "
+                                            + task.getException().getMessage(),
                                     Toast.LENGTH_LONG).show();
                         }
                     });
@@ -111,7 +107,10 @@ public class Login extends AppCompatActivity {
     }
 
     private void saveSession(String uid, String role) {
-        SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
+
+        SharedPreferences.Editor editor =
+                getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
+
         editor.putBoolean(KEY_IS_LOGGED, true);
         editor.putString(KEY_UID, uid);
         editor.putString(KEY_ROLE, role);
@@ -119,12 +118,15 @@ public class Login extends AppCompatActivity {
     }
 
     private void navigateToDashboard(String role) {
+
         Intent intent;
+
         if ("teacher".equals(role)) {
             intent = new Intent(this, Teacher_dashboard.class);
         } else {
             intent = new Intent(this, StudentDashboardActivity.class);
         }
+
         startActivity(intent);
         finish();
     }

@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-
+import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -18,13 +18,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected String userRole;
 
     protected void setupDrawer(int checkedItemId) {
-
+        userRole = getSharedPreferences(Login.PREFS_NAME, MODE_PRIVATE)
+                .getString("role", "");
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigationView);
 
 
         ActionBarDrawerToggle toggle;
-
+        Toast.makeText(this, "Role: " + userRole, Toast.LENGTH_SHORT).show();
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             toggle = new ActionBarDrawerToggle(
@@ -58,23 +59,21 @@ public abstract class BaseActivity extends AppCompatActivity {
                     startActivity(new Intent(this, StudentDashboardActivity.class));
                 }
 
+            } else if (id == R.id.nav_announcements) {
+                startActivity(new Intent(this, AnnouncementActivity.class));
             }
-
-//            else if (id == R.id.nav_announcements) {
-//                startActivity(new Intent(this, announcementActivity.class));
-//            }
 
             else if (id == R.id.nav_upload_material) {
                 startActivity(new Intent(this, LearningMaterialActivity.class));
             }
 
             else if (id == R.id.nav_manage_assignments) {
-                startActivity(new Intent(this, TeacherAssignmentActivity.class));
+                startActivity(new Intent(this, AssignmentListActivity.class));
             }
 
-//            else if (id == R.id.nav_profile) {
-//                startActivity(new Intent(this, ProfileActivity.class));
-//            }
+            else if (id == R.id.nav_profile) {
+                startActivity(new Intent(this, ProfileActivity.class));
+            }
 
             else if (id == R.id.nav_logout) {
                 FirebaseAuth.getInstance().signOut();

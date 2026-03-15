@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,28 +14,32 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 
 public class StudentSignUpActivity extends AppCompatActivity {
+
     FirebaseAuth mAuth;
     EditText name, id, email, password;
     Button signup;
-    DatabaseReference studentRef;
+    DatabaseReference userRef;
     TextView txtLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_signup);
+
         mAuth = FirebaseAuth.getInstance();
+
         // Initialize views
         name = findViewById(R.id.etStudentName);
         id = findViewById(R.id.etStudentId);
         email = findViewById(R.id.etStudentEmail);
         password = findViewById(R.id.etStudentPassword);
         signup = findViewById(R.id.btnStudentSignup);
-        txtLogin=findViewById(R.id.txtLogin);
-        // Firebase reference
-        studentRef = FirebaseDatabase.getInstance()
+        txtLogin = findViewById(R.id.txtLogin);
+
+        // Firebase reference (UPDATED → Users node)
+        userRef = FirebaseDatabase.getInstance()
                 .getReference("CampusConnect")
-                .child("Students");
+                .child("Users");
 
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,15 +75,14 @@ public class StudentSignUpActivity extends AppCompatActivity {
                     return;
                 }
 
-                // Password length check
                 if (sPass.length() < 6) {
                     Toast.makeText(StudentSignUpActivity.this,
-                            "Password must be at least 6 characters", Toast.LENGTH_SHORT).show();
+                            "Password must be at least 6 characters",
+                            Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-
-                // Save data to Firebase
+                // Firebase Authentication
                 mAuth.createUserWithEmailAndPassword(sEmail, sPass)
                         .addOnCompleteListener(task -> {
 
@@ -93,13 +94,11 @@ public class StudentSignUpActivity extends AppCompatActivity {
                                 studentMap.put("name", sName);
                                 studentMap.put("studentId", sId);
                                 studentMap.put("email", sEmail);
-                                studentMap.put("attendance", "0%");
                                 studentMap.put("role", "student");
 
-                                studentRef.child(userId).setValue(studentMap)
+                                userRef.child(userId).setValue(studentMap)
                                         .addOnSuccessListener(unused -> {
 
-                                            // Sign out so user must login manually
                                             FirebaseAuth.getInstance().signOut();
 
                                             Toast.makeText(StudentSignUpActivity.this,
@@ -109,8 +108,10 @@ public class StudentSignUpActivity extends AppCompatActivity {
                                             Intent intent = new Intent(
                                                     StudentSignUpActivity.this,
                                                     Login.class);
+
                                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                                                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
                                             startActivity(intent);
                                             finish();
                                         });
@@ -123,6 +124,7 @@ public class StudentSignUpActivity extends AppCompatActivity {
                         });
             }
         });
+
         txtLogin.setOnClickListener(v -> {
             Intent intent = new Intent(StudentSignUpActivity.this, Login.class);
             startActivity(intent);

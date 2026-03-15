@@ -7,6 +7,9 @@
         <item>3rd Year</item>
         <item>4th Year</item>
     </string-array>
+    <string name="cloud_name">dvu6voafh</string>
+    <string name="api_key">176914193356958</string>
+    <string name="api_secret">15bZWwx_WA7ErZmtUHv7RvCRxgc</string>
     <string name="open_drawer">Open Drawer</string>
     <string name="close_drawer">Close Drawer</string>
 </resources>

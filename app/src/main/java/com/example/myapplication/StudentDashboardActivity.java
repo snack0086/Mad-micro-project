@@ -9,9 +9,10 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class StudentDashboardActivity extends AppCompatActivity {
+public class StudentDashboardActivity extends BaseActivity {
 
     TextView tvWelcome;
+    String userRole;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -19,7 +20,8 @@ public class StudentDashboardActivity extends AppCompatActivity {
 
         // VERY IMPORTANT – set layout first
         setContentView(R.layout.activity_student_dashboard);
-
+        userRole="student";
+        setupDrawer(R.id.nav_dashboard);
         Log.d("StudentDashboard", "onCreate started");
 
         tvWelcome = findViewById(R.id.tvWelcome);

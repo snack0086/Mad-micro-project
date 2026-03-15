@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true"></uses-feature>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
     <application
 
         android:allowBackup="true"
@@ -54,7 +60,7 @@
 
         <!-- Teacher Assignment -->
         <activity
-            android:name=".TeacherAssignmentActivity"
+            android:name=".AssignmentListActivity"
             android:exported="false" />
 
         <!-- Learning Material -->
@@ -62,6 +68,12 @@
             android:name=".LearningMaterialActivity"
             android:exported="false" />
 
+        <!-- Announcements -->
+        <activity
+            android:name=".AnnouncementActivity"
+            android:exported="false" />
+        <activity android:name=".ProfileActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>

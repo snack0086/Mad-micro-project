@@ -31,10 +31,10 @@ public class TeacherSignUpActivity extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        // Initialize Database reference
+        // UPDATED DATABASE NODE
         teacherRef = FirebaseDatabase.getInstance()
                 .getReference("CampusConnect")
-                .child("Teachers");
+                .child("Users");
 
         // Initialize views
         name = findViewById(R.id.etTeacherName);
@@ -42,7 +42,8 @@ public class TeacherSignUpActivity extends AppCompatActivity {
         email = findViewById(R.id.etTeacherEmail);
         password = findViewById(R.id.etTeacherPassword);
         signup = findViewById(R.id.btnTeacherSignup);
-        txtLogin=findViewById(R.id.txtLogin);
+        txtLogin = findViewById(R.id.txtLogin);
+
         signup.setOnClickListener(v -> {
 
             String tName = name.getText().toString().trim();
@@ -97,7 +98,6 @@ public class TeacherSignUpActivity extends AppCompatActivity {
                             teacherRef.child(uid).setValue(teacherMap)
                                     .addOnSuccessListener(unused -> {
 
-                                        // Sign out so user must login manually
                                         FirebaseAuth.getInstance().signOut();
 
                                         Toast.makeText(this,
@@ -107,8 +107,10 @@ public class TeacherSignUpActivity extends AppCompatActivity {
                                         Intent intent = new Intent(
                                                 TeacherSignUpActivity.this,
                                                 Login.class);
+
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                                                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
                                         startActivity(intent);
                                         finish();
                                     })
@@ -124,6 +126,7 @@ public class TeacherSignUpActivity extends AppCompatActivity {
                         }
                     });
         });
+
         txtLogin.setOnClickListener(v -> {
             Intent intent = new Intent(TeacherSignUpActivity.this, Login.class);
             startActivity(intent);
