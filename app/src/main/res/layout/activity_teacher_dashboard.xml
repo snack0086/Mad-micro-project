@@ -293,7 +293,6 @@
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
 
-                        <!-- ETI -->
                         <androidx.cardview.widget.CardView
                             android:layout_width="110dp"
                             android:layout_height="wrap_content"
