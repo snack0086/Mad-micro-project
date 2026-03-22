@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    android:background="@drawable/drawer7_gradient_bg"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:clipToOutline="true">
+
+    <!-- Menu Button at Top Left -->
+    <ImageView
+        android:id="@+id/btnMenu"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/drawer1"
+        android:padding="10dp"
+        android:background="@drawable/drawer2"
+        android:clickable="true"
+        android:focusable="true"/>
+
+    <!-- Centered Content -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="-40dp">
+
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/splash1_circle_light_bg"
+            android:gravity="center"
+            android:elevation="4dp"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/splash2_ic_modern_campus"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CAMPUS CONNECT"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:letterSpacing="0.1"
+            android:fontFamily="sans-serif-black"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your Campus, Connected"
+            android:textSize="12sp"
+            android:textColor="#E0E0E0"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>
+
+</LinearLayout>

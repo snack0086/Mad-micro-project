@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:background="#F5F5F5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header with Theme Color -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Announcement"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#1A3A4A"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="sans-serif-black"
+            android:letterSpacing="0.1"/>
+
+        <!-- Divider Line -->
+        <View
+            android:layout_width="60dp"
+            android:layout_height="3dp"
+            android:background="#1A3A4A"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Title Field -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Announcement Title"
+            android:textSize="14sp"
+            android:textColor="#1A3A4A"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"/>
+
+        <EditText
+            android:id="@+id/etTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter announcement title"
+            android:inputType="text"
+            android:maxLines="2"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/login1_edittext_theme_bg"
+            android:textColorHint="#9AA6B2"
+            android:textColor="#1A1C1E"/>
+
+        <!-- Content Field -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Announcement Content"
+            android:textSize="14sp"
+            android:textColor="#1A3A4A"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"/>
+
+        <EditText
+            android:id="@+id/etContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Write your announcement here..."
+            android:inputType="textMultiLine"
+            android:minLines="5"
+            android:maxLines="8"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="top"
+            android:background="@drawable/login1_edittext_theme_bg"
+            android:textColorHint="#9AA6B2"
+            android:textColor="#1A1C1E"/>
+
+        <!-- Category Field -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            android:textSize="14sp"
+            android:textColor="#1A3A4A"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerCategory"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/annouc1spinner_rounded_bg"
+            android:paddingHorizontal="16dp"/>
+
+        <!-- Urgent Checkbox with Theme Color -->
+        <CheckBox
+            android:id="@+id/cbUrgent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mark as Urgent"
+            android:textSize="15sp"
+            android:textColor="#1A3A4A"
+            android:buttonTint="#1A3A4A"
+            android:layout_marginBottom="28dp"/>
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="Save Announcement"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:backgroundTint="#1A3A4A"
+                app:cornerRadius="12dp"
+                android:stateListAnimator="@null"/>
+
+            <Button
+                android:id="@+id/btnDelete"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="Delete"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:backgroundTint="#F44336"
+                app:cornerRadius="12dp"
+                android:visibility="gone"
+                android:stateListAnimator="@null"/>
+        </LinearLayout>
+
+        <!-- Cancel Option -->
+        <TextView
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:textSize="14sp"
+            android:textColor="#1A3A4A"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="16dp"
+            android:alpha="0.7"
+            android:clickable="true"
+            android:focusable="true"/>
+
+    </LinearLayout>
+</ScrollView>

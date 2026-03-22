@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="#D3E8DA"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Title Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <!-- Status Indicator - Updated to match theme -->
+            <View
+                android:id="@+id/statusIndicator"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/annouc2_circle_theme"
+                android:layout_marginEnd="12dp" />
+
+            <TextView
+                android:id="@+id/tvAnnouncementTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="#1A3A4A"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="Title"
+                android:fontFamily="sans-serif-medium" />
+        </LinearLayout>
+
+        <!-- Message Content -->
+        <TextView
+            android:id="@+id/tvAnnouncementMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#1A3A4A"
+            android:textSize="14sp"
+            android:layout_marginBottom="12dp"
+            android:text="Message"
+            android:alpha="0.8"
+            android:lineSpacingExtra="2dp" />
+
+        <!-- Bottom Row with Time and Urgent Badge -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/tvAnnouncementTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:textColor="#1A3A4A"
+                android:textSize="12sp"
+                android:text="Time"
+                android:alpha="0.6" />
+
+            <!-- Optional Urgent Badge (can be shown/hidden in code) -->
+            <TextView
+                android:id="@+id/tvUrgentBadge"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_weight="0.3"
+                android:text="URGENT"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/announc3_urgent_badge_bg"
+                android:gravity="center"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
