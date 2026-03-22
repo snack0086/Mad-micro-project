@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/drawer1_dashboard"
+            android:title="Dashboard" />
+
+        <item
+            android:id="@+id/nav_announcements"
+            android:icon="@drawable/drawer2_announcement"
+            android:title="Announcements" />
+
+        <item
+            android:id="@+id/nav_upload_material"
+            android:icon="@drawable/drawer3_upload"
+            android:title="Upload Materials" />
+
+        <item
+            android:id="@+id/nav_manage_assignments"
+            android:icon="@drawable/drawer4_assignment"
+            android:title="Manage Assignments"/>
+    </group>
+
+    <item android:title=" " />
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/drawer5_profile"
+            android:title="Profile" />
+
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/drawer6_logout"
+            android:title="Logout"/>
+    </group>
+
+</menu>

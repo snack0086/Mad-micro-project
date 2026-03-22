@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_dashboard_announcement.xml
+    A compact row that appears inside the "Recent Announcements" card
+    on the Student Dashboard. Inflated programmatically in Java.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#F8FAFB"
+    android:padding="10dp"
+    android:layout_marginBottom="8dp">
+
+    <!-- Title row + URGENT badge -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Coloured dot indicator -->
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:background="@drawable/annouc2_circle_theme"
+            android:layout_marginEnd="8dp"/>
+
+        <TextView
+            android:id="@+id/tvDashAnnouncementTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Announcement Title"
+            android:textColor="#1A3A4A"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+        <!-- URGENT badge — hidden by default, shown in Java when isUrgent()==true -->
+        <TextView
+            android:id="@+id/tvDashAnnouncementUrgent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="URGENT"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:background="#E53935"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+    <!-- Short preview of announcement content -->
+    <TextView
+        android:id="@+id/tvDashAnnouncementPreview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Preview of the announcement text…"
+        android:textColor="#4A7A8A"
+        android:textSize="12sp"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="16dp"
+        android:maxLines="2"
+        android:ellipsize="end"/>
+
+</LinearLayout>

@@ -1,0 +1,147 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="#F5F5F5">
+
+    <!-- Page Title with Theme Color -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Learning Materials"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#1A3A4A"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="sans-serif-black"
+        android:letterSpacing="0.1"/>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="60dp"
+        android:layout_height="3dp"
+        android:background="#1A3A4A"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- Upload Section (Teacher only) -->
+    <LinearLayout
+        android:id="@+id/layoutUpload"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="20dp"
+        android:background="#FFFFFF"
+        android:padding="20dp"
+        app:cardCornerRadius="16dp"
+        android:elevation="2dp">
+
+        <!-- Section Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upload New Material"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#1A3A4A"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif-medium"/>
+
+        <!-- Material Title Label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Material Title"
+            android:textSize="14sp"
+            android:textColor="#1A3A4A"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="sans-serif-medium"/>
+
+        <EditText
+            android:id="@+id/etMaterialTitle"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:hint="Enter material title"
+            android:padding="16dp"
+            android:background="@drawable/login1_edittext_theme_bg"
+            android:textColorHint="#9AA6B2"
+            android:textColor="#1A1C1E"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Attach Button with Theme Color -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAttach"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="Attach PDF / Image"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            app:backgroundTint="#1A3A4A"
+            app:cornerRadius="12dp"
+            app:rippleColor="#B0D3E0"
+            android:layout_marginBottom="12dp"
+            android:stateListAnimator="@null"
+            android:elevation="2dp"/>
+
+        <!-- Selected File Indicator -->
+        <TextView
+            android:id="@+id/tvSelectedFile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No file selected"
+            android:textSize="14sp"
+            android:textColor="#1A3A4A"
+            android:alpha="0.7"
+            android:layout_marginBottom="16dp"
+            android:padding="8dp"
+            android:background="#F0F4F8"
+            android:gravity="center"/>
+
+        <!-- Upload Button with Theme Color -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnUpload"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Upload Material"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            app:backgroundTint="#1A3A4A"
+            app:cornerRadius="16dp"
+            app:rippleColor="#B0D3E0"
+            android:stateListAnimator="@null"
+            android:elevation="4dp"/>
+
+    </LinearLayout>
+
+    <!-- Materials List Section (Optional - can be added) -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Available Materials"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#1A3A4A"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp"
+        android:fontFamily="sans-serif-medium"/>
+
+    <!-- Placeholder for RecyclerView (add if needed) -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:text="Materials will appear here"
+        android:textColor="#1A3A4A"
+        android:alpha="0.5"
+        android:gravity="center"
+        android:background="#F0F4F8"
+        android:padding="16dp"
+        android:visibility="gone"/>
+
+</LinearLayout>

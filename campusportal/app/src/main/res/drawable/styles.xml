@@ -1,0 +1,39 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your theme here -->
+        <item android:name="colorPrimary">#1A3A4A</item>
+        <item android:name="colorPrimaryDark">#1A3A4A</item>
+        <item android:name="colorAccent">#1A3A4A</item>
+    </style>
+
+    <!-- ADD THESE TWO STYLES - THEY ARE MISSING -->
+
+    <!-- Toolbar Title Style - Bold and Bigger -->
+    <style name="BoldToolbarTitle">
+        <item android:name="android:textSize">22sp</item>
+        <item android:name="android:textStyle">bold</item>
+        <item android:name="android:textColor">#FFFFFF</item>
+        <item android:name="android:fontFamily">sans-serif-black</item>
+        <item android:name="android:letterSpacing">0.1</item>
+    </style>
+
+    <!-- Navigation Text Style - Bold -->
+    <style name="BoldNavText">
+        <item android:name="android:textSize">16sp</item>
+        <item android:name="android:textStyle">bold</item>
+        <item android:name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="ToolbarTitleStyle">
+        <item android:name="android:textSize">20sp</item>
+        <item android:name="android:textStyle">bold</item>
+        <item android:name="android:textColor">#FFFFFF</item>
+        <item android:name="android:fontFamily">sans-serif-black</item>
+    </style>
+    <style name="NavTextStyle">
+        <item android:textSize="14sp"/>
+        <item android:fontFamily="sans-serif-medium"/>
+        <item android:textColor="#1A3A4A"/>
+    </style>
+</resources>
