@@ -12,40 +12,16 @@
         android:orientation="vertical"
         android:background="#F5F7FA">
 
-        <!-- HEADER with Theme Color Gradient -->
-        <LinearLayout
+        <!-- Standard Gradient Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_height="?attr/actionBarSize"
             android:background="#1A3A4A"
-            android:padding="16dp"
-            android:gravity="center_vertical"
-            android:elevation="4dp">
-
-            <LinearLayout
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:background="@drawable/splash1_circle_light_bg"
-                android:gravity="center"
-                android:layout_marginBottom="16dp">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="39dp"
-                    android:src="@drawable/splash2_ic_modern_campus" />  <!-- Theme color icon, not white -->
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Campus Connect Portal"
-                android:textColor="#FFFFFF"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:fontFamily="sans-serif-black"
-                android:letterSpacing="0.1"/>
-        </LinearLayout>
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:elevation="4dp"
+            app:title="Create Assignment"
+            app:titleTextColor="#FFFFFF" />
 
         <!-- CONTENT -->
         <ScrollView

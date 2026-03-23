@@ -14,26 +14,16 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <!-- Toolbar with direct color - NO DRAWABLE NEEDED -->
-            <!-- Toolbar with ALL styling inline - Guaranteed to work -->
+            <!-- Standard Gradient Toolbar -->
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="#1A3A4A">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Assignments"
-                    android:textColor="#FFFFFF"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:fontFamily="sans-serif-black"
-                    android:letterSpacing="0.1"
-                    android:layout_gravity="center"/>
-
-            </androidx.appcompat.widget.Toolbar>
+                android:background="#1A3A4A"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                android:elevation="4dp"
+                app:title="Assignments"
+                app:titleTextColor="#FFFFFF" />
 
             <!-- RecyclerView with light background -->
             <androidx.recyclerview.widget.RecyclerView

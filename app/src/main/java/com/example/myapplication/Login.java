@@ -1,7 +1,12 @@
 package com.example.myapplication;
 
+import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.widget.EditText;
@@ -11,6 +16,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -30,9 +38,13 @@ public class Login extends AppCompatActivity {
     TextView tvSignUp;
     ImageView imgTogglePassword;
     boolean isPasswordVisible = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // ✅ Ask notification permission (Android 13+)
+        requestNotificationPermission();
 
         // Auto-login
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
@@ -48,12 +60,14 @@ public class Login extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         imgTogglePassword = findViewById(R.id.imgTogglePassword);
-        tvSignUp   = findViewById(R.id.tvSignUp);
+        tvSignUp = findViewById(R.id.tvSignUp);
+
         mAuth = FirebaseAuth.getInstance();
 
         rootRef = FirebaseDatabase.getInstance()
                 .getReference("CampusConnect")
                 .child("Users");
+
         // Toggle password visibility
         imgTogglePassword.setOnClickListener(v -> {
             if (isPasswordVisible) {
@@ -68,9 +82,11 @@ public class Login extends AppCompatActivity {
             isPasswordVisible = !isPasswordVisible;
             etPassword.setSelection(etPassword.getText().length());
         });
+
+        // LOGIN BUTTON
         btnLogin.setOnClickListener(v -> {
 
-            String email    = etUsername.getText().toString().trim();
+            String email = etUsername.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
 
             if (email.isEmpty() || password.isEmpty()) {
@@ -85,7 +101,6 @@ public class Login extends AppCompatActivity {
 
                             String uid = mAuth.getCurrentUser().getUid();
 
-                            // Get user data
                             rootRef.child(uid).get()
                                     .addOnCompleteListener(userTask -> {
 
@@ -96,11 +111,16 @@ public class Login extends AppCompatActivity {
                                                     .child("role")
                                                     .getValue(String.class);
 
+                                            // ✅ SAVE SESSION
                                             saveSession(uid, role);
+
+                                            // ✅ SHOW NOTIFICATION
+                                            showLoginNotification(email);
+
+                                            // ✅ NAVIGATE
                                             navigateToDashboard(role);
 
                                         } else {
-
                                             Toast.makeText(this,
                                                     "User record not found",
                                                     Toast.LENGTH_LONG).show();
@@ -108,7 +128,6 @@ public class Login extends AppCompatActivity {
                                     });
 
                         } else {
-
                             Toast.makeText(this,
                                     "Login Failed: "
                                             + task.getException().getMessage(),
@@ -121,8 +140,54 @@ public class Login extends AppCompatActivity {
                 startActivity(new Intent(this, Signup_main.class)));
     }
 
-    private void saveSession(String uid, String role) {
+    // ================= NOTIFICATION =================
 
+    private void showLoginNotification(String email) {
+
+        String channelId = "login_channel";
+
+        NotificationManager manager =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        // Create channel (Android 8+)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    channelId,
+                    "Login Notifications",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            manager.createNotificationChannel(channel);
+        }
+
+        String username = email.split("@")[0];
+
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this, channelId)
+                        .setSmallIcon(android.R.drawable.ic_dialog_info)
+                        .setContentTitle("Login Successful 🎉")
+                        .setContentText("Welcome back, " + username)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        manager.notify(1, builder.build());
+    }
+
+    // ================= PERMISSION =================
+
+    private void requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
+            }
+        }
+    }
+
+    // ================= SESSION =================
+
+    private void saveSession(String uid, String role) {
         SharedPreferences.Editor editor =
                 getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
 
@@ -132,21 +197,16 @@ public class Login extends AppCompatActivity {
         editor.apply();
     }
 
+    // ================= NAVIGATION =================
+
     private void navigateToDashboard(String role) {
 
         Intent intent;
 
         if ("teacher".equals(role)) {
             intent = new Intent(this, Teacher_dashboard.class);
-        } else if ("student".equals(role)) {
-            intent = new Intent(this, StudentDashboardActivity.class);
         } else {
-            // Role is null or unrecognised — don't silently enter any dashboard
-            Toast.makeText(this,
-                    "Account role not found. Please contact support.",
-                    Toast.LENGTH_LONG).show();
-            FirebaseAuth.getInstance().signOut();
-            return;
+            intent = new Intent(this, StudentDashboardActivity.class);
         }
 
         startActivity(intent);

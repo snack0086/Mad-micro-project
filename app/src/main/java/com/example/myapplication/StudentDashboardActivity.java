@@ -71,6 +71,10 @@ public class StudentDashboardActivity extends BaseActivity {
         // Highlight "Dashboard" item in the Navigation Drawer
         setupDrawer(R.id.nav_dashboard);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+
         // Firebase root reference
         dbRef = FirebaseDatabase.getInstance().getReference("CampusConnect");
 

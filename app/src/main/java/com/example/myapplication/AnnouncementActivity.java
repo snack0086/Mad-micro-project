@@ -56,14 +56,25 @@ public class AnnouncementActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_announcement);
 
+        // ✅ Toolbar setup FIRST
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // ❌ Remove app name (important)
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+
+        // ✅ Drawer setup AFTER toolbar
+        setupDrawer(R.id.nav_announcements);
+
+        // ================= ROLE =================
         String role = getSharedPreferences(Login.PREFS_NAME, MODE_PRIVATE)
                 .getString(Login.KEY_ROLE, "");
         isTeacher = "teacher".equals(role);
         userRole = role;
 
-        // Highlight "Announcements" in the drawer
-        setupDrawer(R.id.nav_announcements);
-
+        // ================= USER =================
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             if (currentUser.getDisplayName() != null && !currentUser.getDisplayName().isEmpty()) {
@@ -76,10 +87,12 @@ public class AnnouncementActivity extends BaseActivity {
             }
         }
 
+        // ================= FIREBASE =================
         announcementsRef = FirebaseDatabase.getInstance()
                 .getReference("CampusConnect")
                 .child("Announcements");
 
+        // ================= INIT =================
         initViews();
         setupRecyclerView();
         setupTabs();
@@ -351,7 +364,7 @@ public class AnnouncementActivity extends BaseActivity {
 
         void bind(Announcement announcement) {
             tvTitle.setText(announcement.getTitle());
-            tvMessage.setText(announcement.getContent()); // fixed: was getMessage() but data uses content field
+            tvMessage.setText(announcement.getMessage());
             tvTime.setText(announcement.getTime() + " • " + announcement.getDate());
 
             if (announcement.isUrgent()) {

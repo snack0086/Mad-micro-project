@@ -1,117 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.drawerlayout.widget.DrawerLayout
+    android:id="@+id/drawerLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#F5F5F5">
+    android:layout_height="match_parent">
 
-    <!-- Header with Gradient -->
+    <!-- ================= MAIN CONTENT ================= -->
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="30dp"
-        android:background="@drawable/drawer7_gradient_bg">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Announcements"
-            android:textSize="32sp"
-            android:layout_marginTop="20dp"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="4dp"
-            android:fontFamily="sans-serif-black"
-            android:letterSpacing="0.1"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Stay updated with campus news"
-            android:textSize="14sp"
-            android:textColor="#E0E0E0"
-            android:alpha="0.9"/>
-    </LinearLayout>
-
-    <!-- Tab Layout - Styled with Theme Color -->
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        app:tabTextColor="#757575"
-        app:tabSelectedTextColor="#1A3A4A"
-        app:tabIndicatorColor="#1A3A4A"
-        app:tabIndicatorHeight="3dp"
-        app:tabMode="scrollable"
-        app:tabGravity="fill"
-        app:tabRippleColor="#1A3A4A"
-        app:tabPaddingStart="12dp"
-        app:tabPaddingEnd="12dp"
-        android:elevation="2dp"/>
-
-    <!-- RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvAnnouncements"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="16dp"
-        android:clipToPadding="false"
-        android:scrollbars="vertical"/>
-
-    <!-- FAB for Teachers - Themed -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabCreate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_add"
-        android:visibility="gone"
-        app:backgroundTint="#1A3A4A"
-        app:tint="#FFFFFF"
-        app:borderWidth="0dp"
-        android:elevation="6dp"/>
-
-    <!-- Empty State - Themed -->
-    <LinearLayout
-        android:id="@+id/emptyState"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center"
-        android:visibility="gone"
-        android:padding="32dp">
+        android:background="#F5F5F5">
 
-        <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/drawer2_announcement"
-            android:alpha="0.3"
-            android:tint="#1A3A4A"
-            android:layout_marginBottom="16dp"/>
+        <!-- ✅ TOOLBAR (FIXED POSITION) -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="#1A3A49"
+            android:elevation="4dp"
+            app:title="Announcements"
+            app:titleTextColor="#FFFFFF" />
 
-        <TextView
-            android:id="@+id/tvEmptyMessage"
+        <!-- Tab Layout - Styled with Theme Color -->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            app:tabTextColor="#757575"
+            app:tabSelectedTextColor="#1A3A4A"
+            app:tabIndicatorColor="#1A3A4A"
+            app:tabIndicatorHeight="3dp"
+            app:tabMode="scrollable"
+            app:tabGravity="fill"
+            app:tabRippleColor="#1A3A4A"
+            app:tabPaddingStart="12dp"
+            app:tabPaddingEnd="12dp"
+            android:elevation="2dp"/>
+
+        <!-- RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAnnouncements"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="16dp"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"/>
+
+        <!-- Empty State - Themed -->
+        <LinearLayout
+            android:id="@+id/emptyState"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone"
+            android:padding="32dp">
+
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/drawer2_announcement"
+                android:alpha="0.3"
+                app:tint="#1A3A4A"
+                android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:id="@+id/tvEmptyMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No announcements available"
+                android:textSize="18sp"
+                android:textColor="#1A3A4A"
+                android:alpha="0.6"
+                android:fontFamily="sans-serif-medium"/>
+        </LinearLayout>
+
+        <!-- Progress Bar - Themed -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:indeterminateTint="#1A3A4A"/>
+
+        <!-- FAB for Teachers - Themed -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabCreate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No announcements available"
-            android:textSize="18sp"
-            android:textColor="#1A3A4A"
-            android:alpha="0.6"
-            android:fontFamily="sans-serif-medium"/>
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_add"
+            android:visibility="gone"
+            app:backgroundTint="#1A3A4A"
+            app:tint="#FFFFFF"
+            app:borderWidth="0dp"
+            android:elevation="6dp"/>
+
     </LinearLayout>
 
-    <!-- Progress Bar - Themed -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:indeterminateTint="#1A3A4A"/>
+    <!-- ================= DRAWER ================= -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/menu"
+        app:headerLayout="@layout/nav_header"
+        app:itemIconTint="#1A3A4A"
+        app:itemTextColor="#1A3A4A"/>
 
-</LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -1,11 +1,17 @@
 package com.example.myapplication;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.view.*;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.*;
+import androidx.core.app.NotificationCompat;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.*;
+
 import java.util.*;
 
 public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.ViewHolder> {
@@ -26,12 +32,6 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
         Button btnSubmit, btnComment;
         EditText etComment;
         RecyclerView rvComments;
-
-        // Store listener refs so we can detach on recycle
-        ValueEventListener submissionListener;
-        ValueEventListener commentListener;
-        DatabaseReference submissionRef;
-        DatabaseReference commentRef;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -65,51 +65,47 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
                 .child("Assignments")
                 .child(a.id);
 
-        // 🔹 Submission visibility
+        // 🔹 Role UI
         if ("student".equals(userRole)) {
             holder.tvCount.setVisibility(View.GONE);
         } else {
             holder.btnSubmit.setVisibility(View.GONE);
         }
 
-        // 🔹 Submission count (Teacher) — detach old listener first
-        if (holder.submissionRef != null && holder.submissionListener != null) {
-            holder.submissionRef.removeEventListener(holder.submissionListener);
-        }
-        holder.submissionRef = ref.child("submissions");
-        holder.submissionListener = new ValueEventListener() {
+        // 🔹 Submission count
+        ref.child("submissions").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 long count = snapshot.getChildrenCount();
                 holder.tvCount.setText("Submissions: " + count);
             }
             @Override public void onCancelled(@NonNull DatabaseError error) {}
-        };
-        holder.submissionRef.addValueEventListener(holder.submissionListener);
-
-        // 🔹 Submit (Student) — null-check currentUser
-        holder.btnSubmit.setOnClickListener(v -> {
-            com.google.firebase.auth.FirebaseUser user =
-                    FirebaseAuth.getInstance().getCurrentUser();
-            if (user == null) {
-                Toast.makeText(context, "Not logged in", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            ref.child("submissions").child(user.getUid()).setValue(true);
-            Toast.makeText(context, "Submitted", Toast.LENGTH_SHORT).show();
         });
 
-        // 🔹 Load Comments — detach old listener first
+        // 🔥 SUBMIT BUTTON (UPDATED)
+        holder.btnSubmit.setOnClickListener(v -> {
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            ref.child("submissions").child(uid).setValue(true)
+                    .addOnSuccessListener(unused -> {
+
+                        Toast.makeText(context, "Submitted", Toast.LENGTH_SHORT).show();
+
+                        // 🔔 STUDENT NOTIFICATION
+                        showStudentNotification(a.title);
+
+                        // 🔔 TEACHER NOTIFICATION
+                        notifyTeacher(a.title);
+                    });
+        });
+
+        // 🔹 Comments
         ArrayList<Comment> commentList = new ArrayList<>();
         CommentAdapter commentAdapter = new CommentAdapter(commentList);
         holder.rvComments.setLayoutManager(new LinearLayoutManager(context));
         holder.rvComments.setAdapter(commentAdapter);
 
-        if (holder.commentRef != null && holder.commentListener != null) {
-            holder.commentRef.removeEventListener(holder.commentListener);
-        }
-        holder.commentRef = ref.child("comments");
-        holder.commentListener = new ValueEventListener() {
+        ref.child("comments").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 commentList.clear();
@@ -120,24 +116,18 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
                 commentAdapter.notifyDataSetChanged();
             }
             @Override public void onCancelled(@NonNull DatabaseError error) {}
-        };
-        holder.commentRef.addValueEventListener(holder.commentListener);
+        });
 
-        // 🔹 Post Comment — null-check currentUser
+        // 🔹 Post Comment
         holder.btnComment.setOnClickListener(v -> {
             String text = holder.etComment.getText().toString().trim();
             if (text.isEmpty()) return;
 
-            com.google.firebase.auth.FirebaseUser user =
-                    FirebaseAuth.getInstance().getCurrentUser();
-            if (user == null) {
-                Toast.makeText(context, "Not logged in", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             String commentId = ref.child("comments").push().getKey();
 
             HashMap<String,Object> map = new HashMap<>();
-            map.put("userUid", user.getUid());
+            map.put("userUid", uid);
             map.put("userRole", userRole);
             map.put("text", text);
             map.put("timestamp", System.currentTimeMillis());
@@ -148,19 +138,61 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
     }
 
     @Override
-    public void onViewRecycled(@NonNull ViewHolder holder) {
-        super.onViewRecycled(holder);
-        // Detach listeners when view is recycled to prevent listener leaks
-        if (holder.submissionRef != null && holder.submissionListener != null) {
-            holder.submissionRef.removeEventListener(holder.submissionListener);
-        }
-        if (holder.commentRef != null && holder.commentListener != null) {
-            holder.commentRef.removeEventListener(holder.commentListener);
-        }
-    }
-
-    @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    // ================= STUDENT NOTIFICATION =================
+    private void showStudentNotification(String title) {
+
+        String channelId = "student_channel";
+
+        NotificationManager manager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    channelId,
+                    "Student Notifications",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            manager.createNotificationChannel(channel);
+        }
+
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(context, channelId)
+                        .setSmallIcon(android.R.drawable.ic_dialog_info)
+                        .setContentTitle("Assignment Submitted 📚")
+                        .setContentText("You submitted: " + title)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        manager.notify(new Random().nextInt(), builder.build());
+    }
+
+    // ================= TEACHER NOTIFICATION =================
+    private void notifyTeacher(String title) {
+
+        String channelId = "teacher_channel";
+
+        NotificationManager manager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    channelId,
+                    "Teacher Notifications",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            manager.createNotificationChannel(channel);
+        }
+
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(context, channelId)
+                        .setSmallIcon(android.R.drawable.ic_dialog_info)
+                        .setContentTitle("New Submission 👨‍🏫")
+                        .setContentText("A student submitted: " + title)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        manager.notify(new Random().nextInt(), builder.build());
     }
 }

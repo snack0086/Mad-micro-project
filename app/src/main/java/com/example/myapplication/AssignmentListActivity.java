@@ -34,9 +34,6 @@ public class AssignmentListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.assignment_list_activity);
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
         setupDrawer(R.id.nav_manage_assignments);
         String role = getSharedPreferences(Login.PREFS_NAME, MODE_PRIVATE)
                 .getString(Login.KEY_ROLE, "");

@@ -40,9 +40,12 @@ public class Teacher_dashboard extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_dashboard);
-
         userRole = "teacher";
         setupDrawer(R.id.nav_dashboard);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         teacherGreeting       = findViewById(R.id.teacherGreeting);
         tvTotalAssignments    = findViewById(R.id.tvTotalAssignments);

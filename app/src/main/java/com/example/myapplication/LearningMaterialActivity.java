@@ -40,6 +40,10 @@ public class LearningMaterialActivity extends BaseActivity {
         toolbar = findViewById(R.id.toolbar);
         setupDrawer(R.id.nav_upload_material);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Learning Materials");
+        }
+
         try {
             Map<String, String> config = new HashMap<>();
             config.put("cloud_name", getString(R.string.cloud_name));
