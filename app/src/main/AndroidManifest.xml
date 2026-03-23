@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true"></uses-feature>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <application
+
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MyApplication">
+        <!-- LAUNCHER: Splash Screen comes first -->
+        <activity
+            android:name=".Splash_Screen"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Login Screen -->
+        <activity
+            android:name=".Login"
+            android:exported="false" />
+
+        <!-- Signup Role Selection -->
+        <activity
+            android:name=".Signup_main"
+            android:exported="false" />
+
+        <!-- Student Sign Up -->
+        <activity
+            android:name=".StudentSignUpActivity"
+            android:exported="false" />
+
+        <!-- Teacher Sign Up -->
+        <activity
+            android:name=".TeacherSignUpActivity"
+            android:exported="false" />
+
+        <!-- Student Dashboard -->
+        <activity
+            android:name=".StudentDashboardActivity"
+            android:exported="false" />
+
+        <!-- Teacher Dashboard -->
+        <activity
+            android:name=".Teacher_dashboard"
+            android:exported="false" />
+
+        <!-- Teacher Assignment -->
+        <activity
+            android:name=".AssignmentListActivity"
+            android:exported="false" />
+
+        <!-- Teacher Add Assignment -->
+        <activity
+            android:name=".TeacherAssignmentActivity"
+            android:exported="false" />
+
+        <!-- Learning Material -->
+        <activity
+            android:name=".LearningMaterialActivity"
+            android:exported="false" />
+
+        <!-- Announcements -->
+        <activity
+            android:name=".AnnouncementActivity"
+            android:exported="false" />
+        <activity android:name=".ProfileActivity"
+            android:exported="true"/>
+    </application>
+
+</manifest>

@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1A3A4A"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="16dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="32dp"
+            app:cardElevation="16dp"
+            app:cardUseCompatPadding="true"
+            app:cardBackgroundColor="#FFFFFF">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <!-- Header with Gradient Background -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:layout_marginBottom="24dp"
+                    android:background="@drawable/signup1_gradient_bg"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <!-- Logo Circle -->
+                        <LinearLayout
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:background="@drawable/splash1_circle_light_bg"
+                            android:gravity="center"
+                            android:elevation="4dp">
+
+                            <ImageView
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:src="@drawable/splash2_ic_modern_campus" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Campus Connect"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <!-- Title Section -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Create Account"
+                    android:textColor="#1A3A4A"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-black" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="24dp"
+                    android:gravity="center"
+                    android:text="Join your campus community today!"
+                    android:textColor="#74777F"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <!-- Full Name Field -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Full Name"
+                    android:textColor="#1A3A4A"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <EditText
+                    android:id="@+id/etStudentName"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:hint="Jane Doe"
+                    android:paddingHorizontal="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/login1_edittext_theme_bg"
+                    android:paddingVertical="12dp"
+                    android:textColor="#1A1C1E"
+                    android:textColorHint="#9AA6B2" />
+
+                <!-- Student ID Field -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Student ID"
+                    android:textColor="#1A3A4A"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <EditText
+                    android:id="@+id/etStudentId"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:hint="12345678"
+                    android:paddingHorizontal="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/login1_edittext_theme_bg"
+                    android:paddingVertical="12dp"
+                    android:inputType="number"
+                    android:textColor="#1A1C1E"
+                    android:textColorHint="#9AA6B2" />
+
+                <!-- Email Field -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="University Email"
+                    android:textColor="#1A3A4A"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <EditText
+                    android:id="@+id/etStudentEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:hint="jane@university.edu"
+                    android:paddingHorizontal="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/login1_edittext_theme_bg"
+                    android:paddingVertical="12dp"
+                    android:inputType="textEmailAddress"
+                    android:textColor="#1A1C1E"
+                    android:textColorHint="#9AA6B2" />
+
+                <!-- Password Field -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Password"
+                    android:textColor="#1A3A4A"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/login1_edittext_theme_bg">
+
+                    <EditText
+                        android:id="@+id/etStudentPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="........"
+                        android:inputType="textPassword"
+                        android:paddingHorizontal="16dp"
+                        android:background="@null"
+                        android:paddingVertical="12dp"
+                        android:textColor="#1A1C1E"
+                        android:textColorHint="#9AA6B2" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:id="@+id/imgTogglePassword"
+                        android:layout_height="24dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/login2_eye_visible"
+                        android:background="@drawable/login2_eye_visible"
+                        android:padding="4dp" />
+                </FrameLayout>
+
+                <!-- Terms Checkbox -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="24dp"
+                    android:background="#F5F7FA"
+                    android:padding="12dp"
+                    android:radius="8dp">
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#1A3A4A" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="I agree to the Terms of Service and Privacy Policy."
+                        android:textSize="12sp"
+                        android:textColor="#1A3A4A"
+                        android:layout_marginStart="8dp"
+                        android:alpha="0.8" />
+                </LinearLayout>
+
+                <!-- Sign Up Button -->
+                <Button
+                    android:id="@+id/btnStudentSignup"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:backgroundTint="#1A3A4A"
+                    android:text="Create Account →"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="16dp"
+                    android:stateListAnimator="@null"
+                    android:elevation="4dp" />
+
+                <!-- Login Link -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="8dp">
+
+                    <TextView
+                        android:id="@+id/txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Already registered? "
+                        android:textColor="#74777F" />
+
+                    <TextView
+                        android:id="@+id/txtLogin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Log in"
+                        android:textColor="#1A3A4A"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:textStyle="bold"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</ScrollView>

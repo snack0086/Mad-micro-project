@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_dashboard_material.xml
+    A compact row that appears inside the "Recent Materials" card
+    on the Student Dashboard. Inflated programmatically in Java.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="#F8FAFB"
+    android:padding="10dp"
+    android:layout_marginBottom="8dp">
+
+    <!-- PDF icon emoji -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="📄"
+        android:textSize="18sp"
+        android:layout_marginEnd="10dp"/>
+
+    <!-- Material title (populated from Firebase in Java) -->
+    <TextView
+        android:id="@+id/tvDashMaterialTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Material Title"
+        android:textColor="#1A3A4A"
+        android:textSize="14sp"
+        android:maxLines="1"
+        android:ellipsize="end"/>
+
+</LinearLayout>

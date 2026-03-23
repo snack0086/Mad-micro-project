@@ -1,0 +1,109 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:background="#F5F5F5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header with Theme Color -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Assignment"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#1A3A4A"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="sans-serif-black"
+            android:letterSpacing="0.1"/>
+
+        <!-- Divider Line -->
+        <View
+            android:layout_width="60dp"
+            android:layout_height="3dp"
+            android:background="#1A3A4A"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Title Field Label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Assignment Title"
+            android:textSize="14sp"
+            android:textColor="#1A3A4A"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="sans-serif-medium"/>
+
+        <EditText
+            android:id="@+id/etAssignmentTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter assignment title"
+            android:padding="16dp"
+            android:background="@drawable/login1_edittext_theme_bg"
+            android:textColorHint="#9AA6B2"
+            android:textColor="#1A1C1E"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Description Field Label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Assignment Description"
+            android:textSize="14sp"
+            android:textColor="#1A3A4A"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="sans-serif-medium"/>
+
+        <EditText
+            android:id="@+id/etAssignmentDesc"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:hint="Write detailed description here..."
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:padding="16dp"
+            android:background="@drawable/login1_edittext_theme_bg"
+            android:textColorHint="#9AA6B2"
+            android:textColor="#1A1C1E"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Post Button with Theme Color -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPostAssignment"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Post Assignment"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            app:backgroundTint="#1A3A4A"
+            app:cornerRadius="16dp"
+            android:stateListAnimator="@null"
+            android:elevation="4dp"/>
+
+        <!-- Cancel Option (Optional) -->
+        <TextView
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:textSize="14sp"
+            android:textColor="#1A3A4A"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:alpha="0.7"
+            android:clickable="true"
+            android:focusable="true"/>
+
+    </LinearLayout>
+</ScrollView>
